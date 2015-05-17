@@ -1,0 +1,55 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+#define f(i,n) for(int i=0;i<n;i++)
+
+struct Input{
+	  int u1,u2;
+};
+
+int hardlim(double n){
+	return n>=0?1:0;
+}
+
+int main(){
+	double W[3] = {1,1,1};
+	int T[4];
+	Input X[4];
+
+	X[0].u1 = 0;X[0].u2 = 0;T[0] = 0;
+	X[1].u1 = 0;X[1].u2 = 1;T[1] = 0;
+	X[2].u1 = 1;X[2].u2 = 0;T[2] = 0;
+	X[3].u1 = 1;X[3].u2 = 1;T[3] = 1;
+
+	int n = 4,Y;
+	double s1,s2,s0,alpha = 0.1;
+	double error = 20;
+	
+	while(error > 0.1){
+			 error = 0;
+			 f(i,n){
+			 		Y = hardlim( W[0]+W[1]*X[i].u1 + W[2]*X[i].u2 );
+			 		s1 = 0;s2 = 0;s0 = 0;
+			 		f(j,n){
+			 			s0 = s0 + (T[j]-Y);
+				 		s1 = s1 + (T[j]-Y)*X[j].u1;
+				 		s2 = s2 + (T[j]-Y)*X[j].u2;
+		 			}
+		 			W[0] = W[0] +  alpha*s0;
+			 		W[1] = W[1] +  alpha*s1;
+					W[2] = W[2] +  alpha*s2;
+					error = error + pow((T[i]-Y),2);
+					cout << W[0] << " " << W[1] << endl;
+			 }
+			 error = error/n;
+
+			 //f(i,1000000000){}
+	}
+	cout << "Error = " << error << endl;
+	f(i,3){
+		cout << W[i] << " ";
+	}
+	cout << endl;
+	system("PAUSE");
+	return 0;
+}
